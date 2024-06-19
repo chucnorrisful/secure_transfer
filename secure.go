@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -87,8 +86,8 @@ func EncryptFile(filePath, pubKeyPath string, verbose bool) error {
 		return err
 	}
 
-	_, pubKeyName := path.Split(pubKeyPath)
-	pubKeyName = strings.TrimSuffix(pubKeyName, ".pub")
+	lastSlash := strings.LastIndex(pubKeyPath, "\\")
+	pubKeyName := strings.TrimSuffix(pubKeyPath[lastSlash+1:], ".pub")
 	archName := "crypt_" + pubKeyName + "_" + time.Now().Format("020106_150405") + ".zip"
 	file, err := os.Create(archName)
 	if err != nil {
